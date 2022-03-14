@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import com.alerner.app.item.domain.Item;
 import com.alerner.app.item.domain.Product;
 
-@Service
+@Service("serviceRestTemplate")
 public class ItemServiceImpl implements ItemService 
 {
 	@Autowired

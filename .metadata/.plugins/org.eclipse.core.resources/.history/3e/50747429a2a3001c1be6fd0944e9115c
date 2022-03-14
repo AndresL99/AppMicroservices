@@ -1,0 +1,5 @@
+package com.alerner.app.item.clients;
+
+public interface ProductClienRest {
+
+}
