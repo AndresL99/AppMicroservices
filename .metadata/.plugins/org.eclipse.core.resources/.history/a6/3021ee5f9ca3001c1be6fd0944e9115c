@@ -1,0 +1,8 @@
+package com.alerner.app.item.domain;
+
+public class Item 
+{
+	
+	private Product product;
+	private Integer amount;
+}

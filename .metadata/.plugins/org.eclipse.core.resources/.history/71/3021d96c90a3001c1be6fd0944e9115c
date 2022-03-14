@@ -1,0 +1,5 @@
+package com.alerner.app.products.domain.entity;
+
+public class Product {
+
+}

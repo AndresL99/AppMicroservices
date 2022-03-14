@@ -1,0 +1,30 @@
+package com.alerner.app.item.domain.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.alerner.app.item.domain.Item;
+import com.alerner.app.item.domain.Product;
+
+@Service
+public class ItemServiceImpl implements ItemService 
+{
+	@Autowired
+	private RestTemplate clientRest;
+
+	@Override
+	public List<Item> findAll() {
+		List<Product> products = clientRest.getForObject("http://localhost:8001/list", Product[].class);
+		return null;
+	}
+
+	@Override
+	public Item findById(Long id, Integer size) {
+		
+		return null;
+	}
+
+}

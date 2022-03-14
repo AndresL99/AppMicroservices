@@ -1,0 +1,5 @@
+package com.alerner.app.products.domain.controller;
+
+public class ProductController {
+
+}

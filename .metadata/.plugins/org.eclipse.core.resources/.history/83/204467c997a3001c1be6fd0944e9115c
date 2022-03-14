@@ -1,0 +1,5 @@
+package com.alerner.app.products.domain.service;
+
+public interface IProductService {
+
+}
