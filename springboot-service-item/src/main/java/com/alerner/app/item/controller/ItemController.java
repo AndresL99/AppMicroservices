@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alerner.app.item.domain.Item;
+import com.alerner.app.item.domain.Product;
 import com.alerner.app.item.domain.service.ItemService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class ItemController 
@@ -25,9 +27,24 @@ public class ItemController
 		return itemService.findAll();
 	}
 	
+	
+	@HystrixCommand(fallbackMethod = "alternativeMethod")
 	@GetMapping("/detail/{id}/size/{size}")
 	public Item detail(@PathVariable Long id, @PathVariable Integer size)
 	{
 		return itemService.findById(id, size);
+	}
+	
+	public Item alternativeMethod(Long id, Integer size)
+	{
+		Item item = new Item();
+		Product product = new Product();
+		
+		item.setSize(size);
+		product.setId(id);
+		product.setName("Sony");
+		product.setPrice(300.00);
+		item.setProduct(product);
+		return item;
 	}
 }
