@@ -32,8 +32,8 @@ public class ProductController
 	{
 		return iProductService.findAll().stream()
 				.map(product -> {
-					//product.setPort(Integer.parseInt(env.getProperty("local.server.port")));
-					product.setPort(port);
+					product.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+					//product.setPort(port);
 					return product;
 				}).collect(Collectors.toList());
 	}
@@ -43,15 +43,15 @@ public class ProductController
 	public Product detail(@PathVariable Long id)
 	{
 		Product product = iProductService.findById(id);
-		//product.setPort(Integer.parseInt(env.getProperty("local.server.port")));
-		product.setPort(port);
+		product.setPort(Integer.parseInt(env.getProperty("local.server.port")));
+		//product.setPort(port);
 		
-		/*try {
+		try {
 			Thread.sleep(2000L);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		return product;
 	}
