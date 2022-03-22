@@ -34,13 +34,13 @@ public class ExampleGlobalFilter implements GlobalFilter, Ordered
 			
 			
 			exchange.getResponse().getCookies().add("colour", ResponseCookie.from("colour", "red").build());
-			exchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
+			//exchange.getResponse().getHeaders().setContentType(MediaType.TEXT_PLAIN);
 		}));
 	}
 
 	@Override
 	public int getOrder() {
-		return -1;
+		return 1;
 	}
 
 }
