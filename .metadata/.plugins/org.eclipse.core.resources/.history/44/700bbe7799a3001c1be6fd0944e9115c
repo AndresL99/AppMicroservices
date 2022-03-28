@@ -1,5 +1,0 @@
-package com.alerner.app.products.domain.repository;
-
-public interface ProductRepository {
-
-}

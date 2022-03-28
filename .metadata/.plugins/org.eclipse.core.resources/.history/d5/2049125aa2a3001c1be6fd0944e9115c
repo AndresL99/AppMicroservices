@@ -1,8 +1,0 @@
-package com.alerner.app.item.clients;
-
-import org.springframework.cloud.openfeign.FeignClient;
-
-@FeignClient(name = "service-product", url = "localhost:8001")
-public interface ProductClienRest {
-
-}

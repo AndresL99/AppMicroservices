@@ -1,4 +1,4 @@
-spring:
+ spring:
   cloud:
     gateway:
       routes:
@@ -6,6 +6,7 @@ spring:
         uri:  lb://service-product
         predicates:
           - Path=/api/products/**
+          - Method=GET, POST
         filters:
         - StripPrefix=2
         - name: ExampleCookie
@@ -19,5 +20,7 @@ spring:
           - Path=/api/items/**
         filters:
         - StripPrefix=2  
-        
+        - AddRequestHeader=token-request, 123456
+        - AddResponseHeader=token-response, 12345678
+        - AddRequestParameter=name, andres
               

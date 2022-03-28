@@ -1,9 +1,0 @@
-INSERT INTO products(name, price, create_at) VALUE ('Samsung', 25.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('LG', 40.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('Sony', 45.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('Apple', 60.500, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('HP Laptop', 120.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('Intel I7 5ta generacion', 250.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('Toshiba', 170.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('Lenovo', 300.000, NOW());
-INSERT INTO products(name, price, create_at) VALUE ('PlayStation 5', 220.000, NOW());
