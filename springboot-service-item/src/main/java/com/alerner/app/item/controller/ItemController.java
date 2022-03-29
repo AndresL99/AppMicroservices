@@ -17,6 +17,8 @@ import com.alerner.app.item.domain.Item;
 import com.alerner.app.item.domain.Product;
 import com.alerner.app.item.domain.service.ItemService;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @RestController
 public class ItemController 
 {
@@ -37,13 +39,20 @@ public class ItemController
 	}
 	
 	
-	//@HystrixCommand(fallbackMethod = "alternativeMethod")
 	@GetMapping("/detail/{id}/size/{size}")
 	public Item detail(@PathVariable Long id, @PathVariable Integer size)
 	{
 		return cbFactory.create("items")
 				.run(() -> itemService.findById(id, size), e -> alternativeMethod(id, size,e));
 	}
+	
+	@CircuitBreaker(name="items", fallbackMethod = "alternativeMethod")
+	@GetMapping("/detail2/{id}/size/{size}")
+	public Item detail2(@PathVariable Long id, @PathVariable Integer size)
+	{
+		return itemService.findById(id, size);
+	}
+	
 	
 	public Item alternativeMethod(Long id, Integer size, Throwable e)
 	{
