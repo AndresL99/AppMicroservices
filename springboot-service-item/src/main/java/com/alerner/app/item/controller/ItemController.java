@@ -1,6 +1,7 @@
 package com.alerner.app.item.controller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ import com.alerner.app.item.domain.Product;
 import com.alerner.app.item.domain.service.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 
 @RestController
 public class ItemController 
@@ -54,6 +56,14 @@ public class ItemController
 	}
 	
 	
+	@CircuitBreaker(name="items", fallbackMethod = "alternativeMethod2")
+	@TimeLimiter(name="items")
+	@GetMapping("/detail3/{id}/size/{size}")
+	public CompletableFuture<Item> detail3(@PathVariable Long id, @PathVariable Integer size)
+	{
+		return CompletableFuture.supplyAsync(() -> itemService.findById(id, size));
+	}
+	
 	public Item alternativeMethod(Long id, Integer size, Throwable e)
 	{
 		logger.info(e.getMessage());
@@ -66,5 +76,19 @@ public class ItemController
 		product.setPrice(300.00);
 		item.setProduct(product);
 		return item;
+	}
+	
+	public CompletableFuture<Item> alternativeMethod2(Long id, Integer size, Throwable e)
+	{
+		logger.info(e.getMessage());
+		Item item = new Item();
+		Product product = new Product();
+		
+		item.setSize(size);
+		product.setId(id);
+		product.setName("Sony");
+		product.setPrice(300.00);
+		item.setProduct(product);
+		return CompletableFuture.supplyAsync(() -> item);
 	}
 }
