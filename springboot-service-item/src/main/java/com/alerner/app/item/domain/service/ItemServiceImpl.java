@@ -8,14 +8,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.alerner.app.item.domain.Item;
 import com.alerner.app.item.domain.Product;
-
-import feign.Request.HttpMethod;
 
 @Service("serviceRestTemplate")
 public class ItemServiceImpl implements ItemService 
@@ -41,12 +40,11 @@ public class ItemServiceImpl implements ItemService
 	@Override
 	public Product save(Product product) 
 	{
+		HttpEntity<Product>body = new HttpEntity<Product>(product);
+		ResponseEntity<Product>resp = clientRest.exchange("http://service-product/", HttpMethod.POST, body, Product.class);
 		
-		HttpEntity<Product> body = new HttpEntity<Product>(product);
-		ResponseEntity<Product>response = clientRest.exchange("http://service-product/", HttpMethod.POST, body, Product.class);
-		Product productResponse = response.getBody();
-		
-		return productResponse;
+		Product productResp = resp.getBody();
+		return productResp;
 	}
 
 	@Override
