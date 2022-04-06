@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alerner.app.item.domain.Item;
-import com.alerner.app.item.domain.Product;
+import com.alerner.app.commons.domain.entity.Product;
 import com.alerner.app.item.domain.service.ItemService;
 
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

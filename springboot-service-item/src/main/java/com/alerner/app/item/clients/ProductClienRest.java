@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.alerner.app.item.domain.Product;
+import com.alerner.app.commons.domain.entity.Product;
 
 @FeignClient(name = "service-product")
 public interface ProductClienRest {

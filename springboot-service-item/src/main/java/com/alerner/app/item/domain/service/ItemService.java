@@ -3,7 +3,7 @@ package com.alerner.app.item.domain.service;
 import java.util.List;
 
 import com.alerner.app.item.domain.Item;
-import com.alerner.app.item.domain.Product;
+import com.alerner.app.commons.domain.entity.Product;
 
 public interface ItemService 
 {

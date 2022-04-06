@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.alerner.app.item.clients.ProductClienRest;
 import com.alerner.app.item.domain.Item;
-import com.alerner.app.item.domain.Product;
+import com.alerner.app.commons.domain.entity.Product;
 
 @Service("serviceFeign")
 @Primary

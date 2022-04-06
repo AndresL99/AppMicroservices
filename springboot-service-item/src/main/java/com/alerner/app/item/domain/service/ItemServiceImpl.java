@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.alerner.app.item.domain.Item;
-import com.alerner.app.item.domain.Product;
+import com.alerner.app.commons.domain.entity.Product;
 
 @Service("serviceRestTemplate")
 public class ItemServiceImpl implements ItemService 

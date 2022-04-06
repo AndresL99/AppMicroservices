@@ -1,5 +1,7 @@
 package com.alerner.app.item.domain;
 
+import com.alerner.app.commons.domain.entity.Product;
+
 public class Item 
 {
 	
