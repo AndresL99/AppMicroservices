@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.alerner.app.commons.users.models.entity.User;
 import com.alerner.app.users.oauth.clients.UserFeignClient;
 
+import feign.FeignException;
+
 @Service
 public class UserService implements UserDetailsService, IUserService
 {
@@ -28,12 +30,9 @@ public class UserService implements UserDetailsService, IUserService
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException 
 	{
+		try {
+			
 		User user = userFeignClient.findByUsername(username);
-		
-		if(user==null)
-		{
-			throw new UsernameNotFoundException("Login error, doesn´t exist '"+username+"'");
-		}
 		
 		List<GrantedAuthority>authorities = user.getRoles()
 				.stream().map(role -> new SimpleGrantedAuthority(role.getName()))
@@ -43,12 +42,23 @@ public class UserService implements UserDetailsService, IUserService
 		log.info("User not identified: " + username);
 		
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getEnabled(), true, true, true, authorities);
+		
+		} catch (FeignException e) {
+			throw new UsernameNotFoundException("Login error, doesn´t exist '"+username+"'");
+		}
+		
 	}
 
 	@Override
 	public User findByUsername(String username) 
 	{
 		return userFeignClient.findByUsername(username);
+	}
+
+	@Override
+	public User update(User user, Long id)
+	{
+		return userFeignClient.update(user, id);
 	}
 
 }
