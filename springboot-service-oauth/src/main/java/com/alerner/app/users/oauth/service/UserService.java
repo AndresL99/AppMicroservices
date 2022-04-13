@@ -17,7 +17,7 @@ import com.alerner.app.commons.users.models.entity.User;
 import com.alerner.app.users.oauth.clients.UserFeignClient;
 
 @Service
-public class UserService implements UserDetailsService
+public class UserService implements UserDetailsService, IUserService
 {
 
 	private Logger log = LoggerFactory.getLogger(UserService.class);
@@ -43,6 +43,12 @@ public class UserService implements UserDetailsService
 		log.info("User not identified: " + username);
 		
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getEnabled(), true, true, true, authorities);
+	}
+
+	@Override
+	public User findByUsername(String username) 
+	{
+		return userFeignClient.findByUsername(username);
 	}
 
 }
