@@ -1,14 +1,20 @@
 package com.alerner.app.gateway.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
 public class springSecurityConfig 
 {
+	
+	@Autowired
+	private JwtAuthenticationFilter authenticationFilter;
+	
 	@Bean
 	public SecurityWebFilterChain configure(ServerHttpSecurity http)
 	{
@@ -21,7 +27,8 @@ public class springSecurityConfig
 				.pathMatchers(HttpMethod.GET, "/api/users/users/{id}").hasAnyRole("ADMIN","USER")
 				.pathMatchers("/api/products/**, /api/items/**, /api/users/users/**").hasRole("ADMIN")
 				.anyExchange().authenticated()
-				.and().csrf().disable()
+				.and().addFilterAt(authenticationFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+				.csrf().disable()
 				.build();
 	}
 }

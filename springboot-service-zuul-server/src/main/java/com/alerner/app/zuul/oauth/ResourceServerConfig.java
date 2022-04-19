@@ -1,6 +1,7 @@
 package com.alerner.app.zuul.oauth;
 
 import java.util.Arrays;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -82,7 +83,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter
 	public JwtAccessTokenConverter accessTokenConverter() 
 	{
 		JwtAccessTokenConverter accessTokenConverter = new JwtAccessTokenConverter();
-		accessTokenConverter.setSigningKey(jwtKey);
+		accessTokenConverter.setSigningKey(Base64.getEncoder().encodeToString(jwtKey.getBytes()));
 		return accessTokenConverter;
 	}
 }
