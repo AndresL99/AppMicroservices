@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import com.alerner.app.commons.users.models.entity.User;
 import com.alerner.app.users.oauth.service.IUserService;
 
+import brave.Tracer;
 import feign.FeignException;
 import feign.FeignException.FeignClientException;
 
@@ -22,6 +23,9 @@ public class AuthenticationSucessErrorHandler implements AuthenticationEventPubl
 
 	@Autowired
 	private IUserService iUserService;
+	
+	@Autowired
+	private Tracer tracer;
 
 	@Override
 	public void publishAuthenticationSuccess(Authentication authentication) {
@@ -45,12 +49,17 @@ public class AuthenticationSucessErrorHandler implements AuthenticationEventPubl
 		log.error("Error in login: " + exception.getMessage());
 
 		try {
+			String message = "Error in login: " + exception.getMessage();
+			StringBuilder errors = new StringBuilder();
+			errors.append(message);
 			User user = iUserService.findByUsername(authentication.getName());
 			if (user.getAttempt() == null) {
 				user.setAttempt(0);
 			}
 			log.info("Actual attempt is: "+user.getAttempt());
 			user.setAttempt(user.getAttempt()+1);
+			
+			errors.append("Attempts in Login:" + user.getAttempt());
 			
 			if(user.getAttempt() >=3)
 			{
@@ -59,6 +68,7 @@ public class AuthenticationSucessErrorHandler implements AuthenticationEventPubl
 			}
 			
 			iUserService.update(user, user.getId());
+			tracer.currentSpan().tag("error.message", errors.toString());
 		} catch (FeignException e) {
 			log.error(String.format("This User doesn't exist.", authentication.getName()));
 		}
