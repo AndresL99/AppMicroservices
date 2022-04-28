@@ -1,0 +1,118 @@
+version: '3.7'
+services:
+  config-server:
+    image: config-server:v1
+    ports:
+     - "8888:8888"
+    restart: always
+    networks:
+      - springcloud
+  service-eureka-server:
+    image: service-eureka-server:v1
+    ports:
+     - "8761:8761"
+    restart: always
+    networks:
+      - springcloud
+  microservices-mysql8:
+    image: mysql:8
+    ports:
+     - "3306:3306"
+    restart: always
+    networks:
+      - springcloud
+    environment:
+      MYSQL_DATABASE: db_springboot_cloud
+      MYSQL_ROOT_PASSWORD: sasa
+  microservices-postgres12:
+    image: postgres:12-alpine
+    ports:
+     - "5432:5432"
+    restart: always
+    networks:
+      - springcloud
+    environment:
+      POSTGRES_DB: db_springboot_cloud
+      POSTGRES_PASSWORD: sasa
+  service-products:
+    image: service-products:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - config-server
+      - service-eureka-server
+      - microservices-mysql8
+  service-items:
+    image: service-items:v1
+    ports:
+      - "8002:8002"
+      - "8005:8005"
+      - "8007:8007"
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - config-server
+      - service-eureka-server
+      - service-products
+  service-zuul-server:
+    image: service-zuul-server:v1
+    ports:
+      - "8090:8090"
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - config-server
+      - service-eureka-server
+      - service-products
+      - service-items
+      - service-users
+      - service-oauth
+  service-users:
+    image: service-users:v1
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - config-server
+      - service-eureka-server
+      - microservices-postgres12
+  service-oauth:
+    image: service-oauth:v1
+    ports:
+      - "9100:9100"
+    restart: always
+    networks:
+      - springcloud
+    depends_on:
+      - config-server
+      - service-eureka-server
+      - service-users
+  microservices-rabbitmq38:
+    image: rabbitmq:3.8-management-alpine
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    restart: always
+    networks:
+      - springcloud
+  zipkin-server:
+    image: zipkin-server:v1
+    ports:
+      - "9411:9411"
+    restart: always
+    networks:
+      - springcloud
+    depends_on: 
+      - microservices-rabbitmq38
+      - microservices-mysql8
+    environment: 
+      RABBIT_ADDRESSES: microservices-rabbitmq38:5672
+      STORAGE_TYPE: mysql
+      MYSQL_USER: zipkin
+      MYSQL_PASS: zipkin
+      MYSQL_HOST: microservices-mysql8
+networks:
+  springcloud:
